@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import './App.scss';
+import DrumMachine from './components/drum-machine';
+
+class App extends React.Component {
+  render() {
+    return (
+      <div className="container">
+        <div className="row vh-100">
+          <div className="col-lg-8 col-md-10 m-auto">
+            <div className="bg-light card shadow">
+              <div className="card-header">
+                <h1 className="display-5 text-center mb-3">Drum Machine</h1>
+              </div>
+              <div className="card-body">
+                <DrumMachine />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
 export default App;
