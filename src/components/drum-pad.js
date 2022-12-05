@@ -10,12 +10,14 @@ export default class DrumPad extends React.Component {
         }
       },
       isActive: false,
+      audioEl: {},
     };
     this.playAudio = this.playAudio.bind(this);
   }
 
   componentDidMount() {
     document.addEventListener('keydown', this.state.keyDownListener);
+    this.setState({ audioEl: document.querySelector(`#${this.props.padKey}`) });
   }
 
   componentWillUnmount() {
@@ -23,10 +25,12 @@ export default class DrumPad extends React.Component {
   }
 
   playAudio() {
+    this.props.onPlay(this.props.song.name);
     this.setState({ isActive: true });
-    const audioEl = document.querySelector(`#${this.props.padKey}`);
+    const audioEl = this.state.audioEl;
+    audioEl.pause();
+    audioEl.currentTime = 0;
     audioEl.play().then(() => {
-      this.props.onPlay(this.props.song.name);
       this.setState({ isActive: false });
     });
   }
