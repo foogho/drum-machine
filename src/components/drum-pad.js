@@ -5,11 +5,11 @@ export default class DrumPad extends React.Component {
     super(props);
     this.state = {
       keyDownListener: (e) => {
-        if (e.key === this.props.padKey.toLowerCase()) {
+        if (e.key.toLowerCase() === this.props.padKey.toLowerCase()) {
           this.playAudio();
         }
       },
-      isActive: false,
+      isPlaying: false,
       audioEl: {},
     };
     this.playAudio = this.playAudio.bind(this);
@@ -24,15 +24,20 @@ export default class DrumPad extends React.Component {
     document.removeEventListener('keydown', this.state.keyDownListener);
   }
 
-  playAudio() {
+  async playAudio() {
+    this.setState({ isPlaying: true });
     this.props.onPlay(this.props.song.name);
-    this.setState({ isActive: true });
     const audioEl = this.state.audioEl;
-    audioEl.pause();
-    audioEl.currentTime = 0;
-    audioEl.play().then(() => {
-      this.setState({ isActive: false });
-    });
+    if (!audioEl.ended) {
+      audioEl.pause();
+      audioEl.currentTime = 0;
+    }
+    try {
+      await audioEl.play();
+    } catch (error) {
+    } finally {
+      this.setState({ isPlaying: false });
+    }
   }
   render() {
     const { padKey, song } = this.props;
@@ -40,7 +45,7 @@ export default class DrumPad extends React.Component {
       <button
         className="drum-pad btn btn-secondary p-4 border rounded text-center shadow-lg fw-semibold"
         onClick={this.playAudio}
-        disabled={this.state.isActive}
+        disabled={this.state.isPlaying}
         id={song.name}
       >
         {padKey}
