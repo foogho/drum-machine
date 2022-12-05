@@ -28,6 +28,7 @@ export default class DrumPad extends React.Component {
     this.setState({ isPlaying: true });
     this.props.onPlay(this.props.song.name);
     const audioEl = this.state.audioEl;
+    audioEl.volume = this.props.volume;
     if (!audioEl.ended) {
       audioEl.pause();
       audioEl.currentTime = 0;
